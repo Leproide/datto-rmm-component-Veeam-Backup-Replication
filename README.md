@@ -9,9 +9,16 @@ Component Setup:
 ![immagine](https://github.com/user-attachments/assets/eb6d892e-e1cb-4636-a340-995915f79f34)
 
 Policy Setup:
+
+Make a filter:
+![immagine](https://github.com/user-attachments/assets/3ac056d4-01fe-4309-9c80-b24675761da5)
+
+And the policy
 ![immagine](https://github.com/user-attachments/assets/09656e17-3b63-43bb-b83e-c1adf9cd93a9)
 
 
 ![immagine](https://github.com/user-attachments/assets/8a61aaff-0aa8-4bfc-a3df-305a66aab79d)
 ![immagine](https://github.com/user-attachments/assets/46a46fed-01f1-4b76-a615-82b87e68c9a4)
 ![immagine](https://github.com/user-attachments/assets/7aebee9e-7b09-4b72-9838-a67fc2b46668)
+![immagine](https://github.com/user-attachments/assets/dc729b17-110b-4543-bdf9-fc694e901c2f)
+
