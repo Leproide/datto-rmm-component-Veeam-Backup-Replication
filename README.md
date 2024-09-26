@@ -11,7 +11,8 @@ Component Setup:
 Policy Setup:
 
 Make a filter:
-![immagine](https://github.com/user-attachments/assets/3ac056d4-01fe-4309-9c80-b24675761da5)
+![immagine](https://github.com/user-attachments/assets/1ffd6a62-ff92-497b-afd6-162bf66f4c9a)
+
 
 And the policy
 ![immagine](https://github.com/user-attachments/assets/09656e17-3b63-43bb-b83e-c1adf9cd93a9)
