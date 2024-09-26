@@ -3,6 +3,10 @@
 Warning!
 This component is a Beta for internal use, correct functioning is not guaranteed
 
+User Defined Field:
+![immagine](https://github.com/user-attachments/assets/c9a054bb-a284-4bf3-85d2-987bdaf9aded)
+
+
 Component Setup:
 ![immagine](https://github.com/user-attachments/assets/b0044e6a-73eb-4999-a743-0e206d3c4f2e)
 
