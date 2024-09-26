@@ -1,6 +1,9 @@
 # datto-rmm-component-Veeam-Backup-Replication
 DATTO RMM COMPONENT - Veeam Backup &amp; Replication
 
+Warning!
+This component is a Beta for internal use, correct functioning is not guaranteed
+
 Component Setup:
 ![immagine](https://github.com/user-attachments/assets/b0044e6a-73eb-4999-a743-0e206d3c4f2e)
 
