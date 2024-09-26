@@ -8,8 +8,8 @@ User Defined Field:
 
 
 Component Setup:
+You need to paste here the ps script
 ![immagine](https://github.com/user-attachments/assets/b0044e6a-73eb-4999-a743-0e206d3c4f2e)
-
 ![immagine](https://github.com/user-attachments/assets/eb6d892e-e1cb-4636-a340-995915f79f34)
 
 Policy Setup:
