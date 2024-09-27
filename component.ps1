@@ -3,8 +3,8 @@
     Script per monitorare gli eventi di backup di Veeam 
     
     leproide@paranoici.org
-    leprechaun@muninn.ovh
-
+    lepechaun@muninn.ovh
+    
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 2 of the License, or
@@ -24,7 +24,7 @@
 # Variabili di configurazione
 $env:usrThreshold = 2  # Soglia di ore per il monitoraggio
 $varUDF = '22'  # Impostazione di default
-$currentDate = (Get-Date).ToString("dd-MM-yyyy")  # Data corrente
+$currentDate = (Get-Date).ToString("dd-MM-yyyy")
 
 function writeAlert ($message) {
     # Funzione per scrivere un avviso nel log di sistema e nella chiave di registro
@@ -92,10 +92,16 @@ function Check-LastBackupEvents {
                 } elseif ($eventCheck -match "getting low on free disk space") {
                     # Estrai le informazioni sullo spazio libero e totale
                     $spaceInfo = $eventCheck -replace ".*getting low on free disk space \((.*?)\)\..*", '$1'
-                    $jobResults[$jobName] = "Warning! Low disk space: $spaceInfo"
+                    $jobResults[$jobName] = "Warning! Low disk space: Backup job '$jobName' finished with Warning: $spaceInfo"
                     $allSuccessful = $false  # Imposta il flag a false per avviso
-                    writeAlert "Warning! Low disk space: $spaceInfo"
+                    writeAlert "Warning! Low disk space: Backup job '$jobName' finished with Warning: $spaceInfo (Data: $currentDate)"
                     exit 1  # Esci con codice di errore 1 per avviso
+                } elseif ($eventCheck -match "finished with Warning") {
+                    # Gestione di un warning generico che non riguarda lo spazio su disco
+                    $jobResults[$jobName] = "Backup job '$jobName' finished with Warning."
+                    $allSuccessful = $false  # Se c'è un warning, imposta il flag a false
+                    writeAlert "Backup job '$jobName' finished with Warning (Data: $currentDate)."
+                    exit 1  # Esci con codice di errore 1 per warning generico
                 } else {
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Unknown Status."
                     $allSuccessful = $false  # Se lo stato è sconosciuto, imposta il flag a false
