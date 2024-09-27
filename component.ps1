@@ -89,19 +89,12 @@ function Check-LastBackupEvents {
                 } elseif ($eventCheck -match "finished with Failed") {
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Failed."
                     $allSuccessful = $false  # Se c'è un fallimento, imposta il flag a false
-                } elseif ($eventCheck -match "getting low on free disk space") {
-                    # Estrai le informazioni sullo spazio libero e totale
-                    $spaceInfo = $eventCheck -replace ".*getting low on free disk space \((.*?)\)\..*", '$1'
-                    $jobResults[$jobName] = "Warning! Low disk space: Backup job '$jobName' finished with Warning: $spaceInfo (Data: $currentDate)"
-                    $allSuccessful = $false  # Imposta il flag a false per avviso
-                    writeAlert "Warning! Low disk space: Backup job '$jobName' finished with Warning: $spaceInfo (Data: $currentDate)"
-                    exit 1  # Esci con codice di errore 1 per avviso
                 } elseif ($eventCheck -match "finished with Warning") {
-                    # Gestione di un warning generico che non riguarda lo spazio su disco
+                    # Gestione di un warning
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Warning."
                     $allSuccessful = $false  # Se c'è un warning, imposta il flag a false
                     writeAlert "Backup job '$jobName' finished with Warning (Data: $currentDate)."
-                    exit 1  # Esci con codice di errore 1 per warning generico
+                    exit 1  # Esci con codice di errore 1 per warning
                 } else {
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Unknown Status."
                     $allSuccessful = $false  # Se lo stato è sconosciuto, imposta il flag a false
@@ -127,6 +120,12 @@ function Check-LastBackupEvents {
     } else {
         writeAlert "ERROR: Nessun evento di backup trovato oggi ($currentDate)."
         exit 1
+    }
+
+    # Stampa le informazioni di debug alla fine dello script
+    Write-Host "DEBUG: Job Results:"
+    foreach ($job in $jobResults.Keys) {
+        Write-Host "Job Name: $job - Result: $($jobResults[$job])"
     }
 }
 
