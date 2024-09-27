@@ -81,6 +81,7 @@ function Check-LastBackupEvents {
 
             $eventCheck = $event.Message
             $jobName = $eventCheck -replace "Backup job '(.*?)'.*", '$1'  # Estrai il nome del job
+			$jobNameWarn = $eventCheck
 
             # Mantieni solo l'evento più recente per ogni job
             if (-not $jobResults.ContainsKey($jobName)) {
@@ -93,7 +94,7 @@ function Check-LastBackupEvents {
                     # Gestione di un warning
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Warning."
                     $allSuccessful = $false  # Se c'è un warning, imposta il flag a false
-                    writeAlert "Backup job '$jobName' finished with Warning (Data: $currentDate)."
+                    writeAlert "'$jobNameWarn' (Data: $currentDate)."
                     exit 1  # Esci con codice di errore 1 per warning
                 } else {
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Unknown Status."
