@@ -123,11 +123,6 @@ function Check-LastBackupEvents {
         exit 1
     }
 
-    # Stampa le informazioni di debug alla fine dello script
-    Write-Host "DEBUG: Job Results:"
-    foreach ($job in $jobResults.Keys) {
-        Write-Host "Job Name: $job - Result: $($jobResults[$job])"
-    }
 }
 
 ################################################ CHECKZONE ###################################################
