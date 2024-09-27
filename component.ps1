@@ -3,8 +3,8 @@
     Script per monitorare gli eventi di backup di Veeam 
     
     leproide@paranoici.org
-    lepechaun@muninn.ovh
-    
+    leprechaun@muninn.ovh
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 2 of the License, or
@@ -92,7 +92,7 @@ function Check-LastBackupEvents {
                 } elseif ($eventCheck -match "getting low on free disk space") {
                     # Estrai le informazioni sullo spazio libero e totale
                     $spaceInfo = $eventCheck -replace ".*getting low on free disk space \((.*?)\)\..*", '$1'
-                    $jobResults[$jobName] = "Warning! Low disk space: Backup job '$jobName' finished with Warning: $spaceInfo"
+                    $jobResults[$jobName] = "Warning! Low disk space: Backup job '$jobName' finished with Warning: $spaceInfo (Data: $currentDate)"
                     $allSuccessful = $false  # Imposta il flag a false per avviso
                     writeAlert "Warning! Low disk space: Backup job '$jobName' finished with Warning: $spaceInfo (Data: $currentDate)"
                     exit 1  # Esci con codice di errore 1 per avviso
