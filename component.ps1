@@ -1,7 +1,9 @@
 <# 
     Veeam Backup & Replication Community
     Script per monitorare gli eventi di backup di Veeam 
+    
     leproide@paranoici.org
+    leprechaun@muninn.ovh
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,6 +24,7 @@
 # Variabili di configurazione
 $env:usrThreshold = 2  # Soglia di ore per il monitoraggio
 $varUDF = '22'  # Impostazione di default
+$currentDate = (Get-Date).ToString("dd-MM-yyyy")  # Data corrente
 
 function writeAlert ($message) {
     # Funzione per scrivere un avviso nel log di sistema e nella chiave di registro
@@ -50,57 +53,73 @@ function writeAlert ($message) {
 
 # Controlla l'ultimo evento di backup per ciascun job di Veeam
 function Check-LastBackupEvents {
-    # Ottieni gli eventi di backup (ID 190 per successo, 191 per fallimento)
-    $backupEvents = Get-WinEvent -FilterHashTable @{Logname = "Veeam Backup"; ID = 190, 191} | Sort-Object TimeCreated -Descending
+    # Ottieni gli eventi di backup (ID 190 per successo o avvisi, 191 per fallimento) e filtra per la data corrente
+    $backupEvents = Get-WinEvent -FilterHashTable @{Logname = "Veeam Backup"; ID = 190, 191} | Where-Object {
+        $_.TimeCreated.Date -eq (Get-Date).Date
+    } | Sort-Object TimeCreated -Descending
 
     if ($backupEvents) {
         $jobResults = @{}  # Hash table per tenere traccia dell'ultimo evento per ogni job
         $allSuccessful = $true  # Flag per determinare se tutti i job hanno avuto successo
+        $lastEventTime = ""
 
         foreach ($event in $backupEvents) {
             $eventTime = $event.TimeCreated
             $formattedEventTime = $eventTime.ToString("dd-MM-yyyy HH:mm:ss")
             Write-Host "DEBUG: Controllando evento al $formattedEventTime"
 
+            # Calcola la differenza di ore dall'evento corrente
             $timeDifference = (Get-Date) - $eventTime
             $hoursDifference = $timeDifference.TotalHours
             Write-Host "DEBUG: Differenza di ore: $hoursDifference"
 
-            # Se l'evento è all'interno della soglia di tempo
-            if ($hoursDifference -le $env:usrThreshold) {
-                $eventCheck = $event.Message
-                $jobName = $eventCheck -replace "Backup job '(.*?)'.*", '$1'  # Estrai il nome del job
+            # Se la differenza di ore supera la soglia di 2 ore, ignora l'evento
+            if ($hoursDifference -gt $env:usrThreshold) {
+                Write-Host "DEBUG: Evento ignorato poiché più vecchio di $env:usrThreshold ore."
+                continue
+            }
 
-                # Aggiorna il risultato del job solo se non è già presente
-                if (-not $jobResults.ContainsKey($jobName)) {
-                    if ($eventCheck -match "finished with Success") {
-                        $jobResults[$jobName] = "Backup job '$jobName' finished with Success. All objects have been backed up successfully.`r`n"
-                    } elseif ($eventCheck -match "finished with Failed") {
-                        $jobResults[$jobName] = "Backup job '$jobName' finished with Failed.`r`n"
-                        $allSuccessful = $false  # Se c'è un fallimento, imposta il flag a false
-                    } else {
-                        $jobResults[$jobName] = "Backup job '$jobName' finished with Unknown Status.`r`n"
-                        $allSuccessful = $false  # Se lo stato è sconosciuto, imposta il flag a false
-                    }
+            $eventCheck = $event.Message
+            $jobName = $eventCheck -replace "Backup job '(.*?)'.*", '$1'  # Estrai il nome del job
+
+            # Mantieni solo l'evento più recente per ogni job
+            if (-not $jobResults.ContainsKey($jobName)) {
+                if ($eventCheck -match "finished with Success") {
+                    $jobResults[$jobName] = "Backup job '$jobName' finished with Success."
+                } elseif ($eventCheck -match "finished with Failed") {
+                    $jobResults[$jobName] = "Backup job '$jobName' finished with Failed."
+                    $allSuccessful = $false  # Se c'è un fallimento, imposta il flag a false
+                } elseif ($eventCheck -match "getting low on free disk space") {
+                    # Estrai le informazioni sullo spazio libero e totale
+                    $spaceInfo = $eventCheck -replace ".*getting low on free disk space \((.*?)\)\..*", '$1'
+                    $jobResults[$jobName] = "Warning! Low disk space: $spaceInfo"
+                    $allSuccessful = $false  # Imposta il flag a false per avviso
+                    writeAlert "Warning! Low disk space: $spaceInfo"
+                    exit 1  # Esci con codice di errore 1 per avviso
+                } else {
+                    $jobResults[$jobName] = "Backup job '$jobName' finished with Unknown Status."
+                    $allSuccessful = $false  # Se lo stato è sconosciuto, imposta il flag a false
                 }
+
+                $lastEventTime = $formattedEventTime  # Aggiorna l'ultimo orario dell'evento
             }
         }
 
         # Controlla se ci sono risultati per i job
         if ($jobResults.Count -gt 0) {
             if ($allSuccessful) {
-                writeAlert "Backup locali completati"
+                writeAlert "Backup locali completati $lastEventTime"
                 exit 0
             } else {
-                writeAlert "Backup falliti"
+                writeAlert "Backup falliti $lastEventTime"
                 exit 1
             }
         } else {
-            writeAlert "ERROR: No backup events found within the threshold."
+            writeAlert "ERROR: Nessun evento di backup trovato oggi ($currentDate)."
             exit 1
         }
     } else {
-        writeAlert "ERROR: No backup events found."
+        writeAlert "ERROR: Nessun evento di backup trovato oggi ($currentDate)."
         exit 1
     }
 }
