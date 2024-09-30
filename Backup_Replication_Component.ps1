@@ -25,6 +25,7 @@
 $env:usrThreshold = 2  # Soglia di ore per il monitoraggio
 $varUDF = '22'  # Impostazione di default
 $currentDate = (Get-Date).ToString("dd-MM-yyyy")
+$currentDateTime = (Get-Date).ToString("dd-MM-yyyy HH:mm")
 
 function writeAlert ($message) {
     # Funzione per scrivere un avviso nel log di sistema e nella chiave di registro
@@ -94,7 +95,7 @@ function Check-LastBackupEvents {
                     # Gestione di un warning
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Warning."
                     $allSuccessful = $false  # Se c'è un warning, imposta il flag a false
-                    writeAlert "'$jobNameWarn' (Data: $currentDate)."
+                    writeAlert "'$jobNameWarn' (Data: $currentDateTime)."
                     exit 1  # Esci con codice di errore 1 per warning
                 } else {
                     $jobResults[$jobName] = "Backup job '$jobName' finished with Unknown Status."
@@ -115,11 +116,11 @@ function Check-LastBackupEvents {
                 exit 1
             }
         } else {
-            writeAlert "ERROR: Nessun evento di backup trovato oggi ($currentDate)."
+            writeAlert "ERROR: Nessun evento di backup trovato oggi ($currentDateTime)."
             exit 1
         }
     } else {
-        writeAlert "ERROR: Nessun evento di backup trovato oggi ($currentDate)."
+        writeAlert "ERROR: Nessun evento di backup trovato oggi ($currentDateTime)."
         exit 1
     }
 
