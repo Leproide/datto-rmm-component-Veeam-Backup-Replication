@@ -3,6 +3,10 @@
 Warning!
 This component is a Beta for internal use, proper functionality cannot be assured.
 
+Warning!
+The usrThreshold doesn't represent "Hours to wait before alerting on lack of backups," as shown in the screenshot. Instead, it defines the time window the script uses to check event log entries.
+It's an error caused by copying the Datto component used as an example for creating this one for Veeam. I'm lazy and don't plan to redo the screenshots.
+
 I created two scripts, one for Backup and Replication (tested with the community edition) and one for Veeam Agent. The second script checks if there are no failed or completed backup events for 7 days before triggering an alert.
 
 User Defined Field:
