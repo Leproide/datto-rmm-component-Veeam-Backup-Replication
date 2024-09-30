@@ -3,6 +3,8 @@
 Warning!
 This component is a Beta for internal use, proper functionality cannot be assured.
 
+I created two scripts, one for Backup and Replication (tested with the community edition) and one for Veeam Agent. The second script checks if there are no failed or completed backup events for 7 days before triggering an alert.
+
 User Defined Field:
 ![immagine](https://github.com/user-attachments/assets/c9a054bb-a284-4bf3-85d2-987bdaf9aded)
 
@@ -27,6 +29,3 @@ And the policy
 ![immagine](https://github.com/user-attachments/assets/46a46fed-01f1-4b76-a615-82b87e68c9a4)
 ![immagine](https://github.com/user-attachments/assets/7aebee9e-7b09-4b72-9838-a67fc2b46668)
 ![immagine](https://github.com/user-attachments/assets/dc729b17-110b-4543-bdf9-fc694e901c2f)
-
-
-I created two scripts, one for Backup and Replication (tested with the community edition) and one for Veeam Agent. The second script checks if there are no failed or completed backup events for 7 days before triggering an alert.
