@@ -55,7 +55,7 @@ function writeAlert ($message) {
 # Controlla l'ultimo evento di backup per ciascun job di Veeam
 function Check-LastBackupEvents {
     # Ottieni gli eventi di backup (ID 190 per successo o avvisi, 191 per fallimento) e filtra per la data corrente
-    $backupEvents = Get-WinEvent -FilterHashTable @{Logname = "Veeam Backup"; ID = 190, 191} | Where-Object {
+    $backupEvents = Get-WinEvent -FilterHashTable @{Logname = "Veeam Backup"; ID = 190, 191, 790} | Where-Object {
         $_.TimeCreated.Date -eq (Get-Date).Date
     } | Sort-Object TimeCreated -Descending
 
