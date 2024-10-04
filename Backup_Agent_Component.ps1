@@ -2,7 +2,6 @@
     Veeam Backup Agent
     Script per monitorare gli eventi di backup di Veeam Agent
     
-    m.mossino@flexxa.it
     leproide@paranoici.org
     leprechaun@muninn.ovh
 
