@@ -1,5 +1,11 @@
 # Datto RMM component Veeam Backup & Replication
 
+UPDATE 04/10/2024:
+
+Corrected documentation in progress
+
+Translation of scripts into English in progress
+
 Warning!
 This component is a Beta for internal use, proper functionality cannot be assured.
 
