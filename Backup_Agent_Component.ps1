@@ -85,7 +85,7 @@ function writeAlert ($message) {
 function Check-Last7DaysEvents {
     foreach ($log in $logToUse) {
         Write-Host "DEBUG: Controllo eventi degli ultimi 7 giorni nel log $log."
-        $last7DaysEvents = Get-WinEvent -FilterHashTable @{Logname = $log; ID = 190, 191} | Where-Object {
+        $last7DaysEvents = Get-WinEvent -FilterHashTable @{Logname = $log; ID = 190, 191, 790} | Where-Object {
             $_.TimeCreated -ge (Get-Date).AddDays(-7)
         }
 
