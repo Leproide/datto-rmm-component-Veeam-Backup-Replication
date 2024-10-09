@@ -11,6 +11,9 @@ English translation in progress
 Warning!
 This component is a Beta for internal use, proper functionality cannot be assured.
 
+Warning!
+Any changes made to scripts or policies must be confirmed by returning to the policy section, opening the Veeam policy, and clicking "Save and deploy now"; otherwise, all changes will be ignored.
+
 I created two scripts, one for Backup and Replication (tested with the community edition) and one for Veeam Agent. The second script checks if there are no failed or completed backup events for 7 days before triggering an alert.
 
 User Defined Field:
