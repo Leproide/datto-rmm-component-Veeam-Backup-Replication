@@ -27,7 +27,7 @@ You need to paste here the ps script
 ![3- Device Filter](https://github.com/user-attachments/assets/de7a5b63-9979-4167-9bed-0d85a3682d4a)
 
 
-#Policy:
+# Policy:
 ![4 - Policy](https://github.com/user-attachments/assets/f5f56d64-1bf4-441b-9fdb-ac37ed1aff30)
 ![5 - Policy](https://github.com/user-attachments/assets/c9e7d026-78e4-4698-9de0-770cccfdee0c)
 
