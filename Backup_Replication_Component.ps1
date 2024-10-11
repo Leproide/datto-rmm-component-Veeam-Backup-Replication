@@ -128,5 +128,13 @@ function Check-LastBackupEvents {
 
 ################################################ CHECKZONE ###################################################
 
-# Esegui il controllo degli eventi di backup
-Check-LastBackupEvents
+# Time range check
+$currentHour = (Get-Date).Hour
+if ($currentHour -ge 0 -and $currentHour -lt 2) {
+    Write-Host "DEBUG: Time range between midnight and 2 AM. Exiting without running checks."
+    Exit 0
+} else {
+    # Run the backup events check
+    Check-LastBackupEvents
+}
+
