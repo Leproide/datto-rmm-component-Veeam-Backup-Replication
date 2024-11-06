@@ -25,7 +25,7 @@ You need to paste here the ps script
 
 # Device Filter:
 
-If it doesn’t work with the app name, use the service name.
+If it doesn’t work with the software package name, use the service name.
 ![3- Device Filter](https://github.com/user-attachments/assets/de7a5b63-9979-4167-9bed-0d85a3682d4a)
 
 
